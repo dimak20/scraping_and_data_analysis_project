@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import time
 from typing import Iterable
@@ -67,8 +68,8 @@ class DouSpider(scrapy.Spider):
                     link = more_button.find_element(By.TAG_NAME, "a")
                     link.click()
                     time.sleep(1)
-                except Exception:
-                    break
+                except Exception as e:
+                    logging.info(f"An error occurred {e}")
 
             html = self.driver.page_source
             response = TextResponse(url=url, body=html, encoding="utf-8")
