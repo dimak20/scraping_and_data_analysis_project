@@ -8,19 +8,12 @@ import scrapy
 from scrapy import Request
 from scrapy.http import Response, TextResponse
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
-chrome_options = Options()
-chrome_options.add_argument(
-    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/85.0.4183.121 Safari/537.36"
-)
-chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-chrome_options.add_experimental_option("useAutomationExtension", False)
-chrome_options.add_argument("--incognito")
+from vacancies_scraping.driver_utiles import chrome_options
+from vacancies_scraping.items import JobVacancyItem
 
 VACANCY_CSS = "li.l-vacancy"
 VACANCY_URL = "a.vt::attr(href)"
@@ -31,14 +24,6 @@ VACANCY_SALARY = "span.salary::text"
 VACANCY_DESCRIPTION = "div.b-typo.vacancy-section"
 
 
-class JobVacancyItem(scrapy.Item):
-    title = scrapy.Field()
-    company = scrapy.Field()
-    location = scrapy.Field()
-    salary = scrapy.Field()
-    description = scrapy.Field()
-    technologies = scrapy.Field()
-    experience = scrapy.Field()
 
 
 class DouSpider(scrapy.Spider):
@@ -63,13 +48,21 @@ class DouSpider(scrapy.Spider):
             while True:
                 try:
                     more_button = WebDriverWait(self.driver, 10).until(
-                        ec.element_to_be_clickable((By.CLASS_NAME, "more-btn"))
+                        ec.visibility_of_element_located((By.CLASS_NAME, "more-btn"))
                     )
-                    link = more_button.find_element(By.TAG_NAME, "a")
-                    link.click()
-                    time.sleep(1)
+                    if more_button.is_enabled():
+                        self.driver.execute_script("arguments[0].scrollIntoView();", more_button)
+
+                        link = more_button.find_element(By.TAG_NAME, "a")
+                        link.click()
+
+                        time.sleep(1)
+                    else:
+                        break
+
                 except Exception as e:
-                    logging.info(f"An error occurred {e}")
+                    logging.info(f"An error occurred: {e}")
+                    break
 
             html = self.driver.page_source
             response = TextResponse(url=url, body=html, encoding="utf-8")
