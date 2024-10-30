@@ -102,12 +102,12 @@ scrapy crawl dou_spider -O vacancies.csv
 ![Top-20](plots/top_20_technologies.png)
 
 
-![Vacancies](plots/Distribution of vacancies by location.png)
+![Vacancies](plots/distribution_of_vacancies_by_location.png)
 
 
-![Frameworks](plots/Number of vacancies by frameworks.png)
+![Frameworks](plots/number_of_vacancies_by_frameworks.png)
 
 
-![Experience](plots/Required experience.png)
+![Experience](plots/required_experience.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
