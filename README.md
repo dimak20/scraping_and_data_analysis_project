@@ -1,4 +1,8 @@
 # Scraping and data analysis 📊
+
+<a id="readme-top"></a>
+
+
 The project collects data from various job search websites and analyzes the obtained information using the ELT cycle. The parser gathers data from DOU and categorizes the collected data by work experience.
 
 ## Features:
@@ -92,6 +96,8 @@ scrapy crawl dou_spider -O vacancies.csv
 - ### vacancy_analysis.ipynb:
   This is the main file where the extraction and preparation of data for analysis takes place. It also performs the analysis of the collected data. Additionally, it saves the generated graphs in the `plots` directory.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Graphics
 ![Top-20](plots/top_20_technologies.png)
 
@@ -104,5 +110,4 @@ scrapy crawl dou_spider -O vacancies.csv
 
 ![Experience](plots/Required experience.png)
 
-
-
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
